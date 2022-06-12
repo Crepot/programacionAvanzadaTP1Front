@@ -1,0 +1,14 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #22333b;
+}
+
+.navbar{
+  display: inline;
+  background-color: #848484;
+  justify-content: center;
+}

@@ -1,0 +1,23 @@
+.MainContainer{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border: 1px blue;
+}
+
+.InnerContainer{
+    text-align: center;
+    color: aliceblue;
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+    font: bold;
+}
+
+.form-group{
+    text-align: left;
+}
+
+.register{
+    text-align: right;
+}
