@@ -4,9 +4,7 @@ import '../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import {login} from '../api/players'
 import {singup} from '../api/players/singup';
-import Cookies from 'universal-cookie';
 
-const cookie = new Cookies();
 class Singup extends Component{
     state = {
         form:{
@@ -63,7 +61,7 @@ class Singup extends Component{
                     singup(this.state.form.user,this.state.form.email,this.state.form.password,this.state.form.passwordconfirm).then((res) => {
                         if(res.data){
                             //Redirigir al Menu Login
-                            window.location.href="./Login"
+                            window.location.href="/"
                         }
 
                     }).catch((err) => {

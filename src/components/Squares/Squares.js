@@ -3,7 +3,8 @@ import '../../css/Square.css'
 
 const Square = ({value, onClick,turn,winner}) => {
     const handleCklick = () => {
-       (turn !== null && value === null) && onClick();
+        console.log('ESTE ES EL VALUE QUE LE LLEGA AL SQUARE ===> ',value);
+       (turn !== null && value === 0) && onClick();
     }
     
     let squareClass = classNames({

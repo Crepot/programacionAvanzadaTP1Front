@@ -51,6 +51,7 @@ class Login extends Component{
                     login(this.state.form.username,this.state.form.password).then((res) => {
                         if(res.data){
                             cookie.set('authToken',res.data.authToken,{path:"/"});
+                            cookie.set('playerId',res.data.player_id,{path:"/"});
                             //Redirigir al Menu ppal
                             window.location.href="./Menu"
                         }

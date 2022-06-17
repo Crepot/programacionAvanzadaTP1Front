@@ -1,17 +1,18 @@
-const axios = require('axios');
-const _ = require('lodash')
 
-export default function getTables(token){
+const axios = require('axios');
+
+
+
+/**/
+export default function getSquares(token,tableId,){
     return new Promise(async (resolve,reject) => {
-        // console.log('TOKEN PARA GET TABLES =>', token)
-        const url =`${process.env.REACT_APP_API_URL}/table/`;
-        let headers = {
+        let url =`${process.env.REACT_APP_API_URL}/table/${tableId}/positions`;
+        const headers = {
             Authorization: `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
         };
-
         axios.get(url,{headers}).then((res)=> {
-            resolve(res);
+            resolve(res.data.positions);
         }).catch((err)=> {
             console.log('ERROR => ',err)
             reject(err)
@@ -20,4 +21,3 @@ export default function getTables(token){
     });
 
 };
-// module.exports = {getTables};

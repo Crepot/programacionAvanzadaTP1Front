@@ -11,7 +11,9 @@ const cookie = new Cookies();
 const Menu= () => {
  
   const token = cookie.get('authToken')
-  console.log('EL TOKEN DE LA COOKIE ES: ',token)
+  const playerId = cookie.get('playerId')
+  console.log('Token: ',token)
+  console.log('playerId: ',playerId)
 /*----------------------------------------- */
   // Function to add our give data into cache
   // const addDataIntoCache = (cacheName, url, response) => {

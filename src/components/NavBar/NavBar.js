@@ -12,7 +12,7 @@ class NavBar extends Component{
                     <Nav.Link href="/Menu" >Main menu</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href="Menu/App">New game</Nav.Link>
+                    <Nav.Link href="/Tableros">New game</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link href="/">Log Out</Nav.Link>

@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 94.2vh;
   background-color: #22333b;
 }
 
@@ -11,4 +11,27 @@
   display: inline;
   background-color: #848484;
   justify-content: center;
+}
+
+.tablero{
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.h1,h1 {
+  font-size: 6rem;
+  color: white;
+}
+
+/* .tr{
+  color: aliceblue;
+} */
+
+/* .th{
+  color: aliceblue;
+} */
+
+.tableContainer{
+  display: flexbox;  
 }
