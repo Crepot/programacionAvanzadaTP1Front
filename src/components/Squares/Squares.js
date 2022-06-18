@@ -6,10 +6,10 @@ const Square = ({value, onClick,turn,winner}) => {
         console.log('ESTE ES EL VALUE QUE LE LLEGA AL SQUARE ===> ',value);
        (turn !== null && value === 0) && onClick();
     }
-    
+
     let squareClass = classNames({
         square:true,
-        [`square--${value}`]: value != null,
+        [`square--${value}`]: value !== 0,
         winner: winner,
     });
     return (

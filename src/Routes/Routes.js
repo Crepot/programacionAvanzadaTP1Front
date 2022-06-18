@@ -4,7 +4,6 @@ import Login from '../Pages/Login';
 import Singup from '../Pages/Singup';
 import Menu from '../Pages/Menu';
 import App from '../Pages/App';
-import Application from '../Pages/Tateti';
 import Tableros from '../Pages/Tableros';
 import {Provider} from 'react-redux'
 import store  from '../reducers/index'
@@ -15,7 +14,6 @@ function Routes(){
         <Provider store={store}>
             <Switch>
             <Route path='/App/:id' element={<App/>}/>
-            <Route path='/Application/:id' element={<Application/>}/>
             <Route exact path='/' element={<Login/>}/>
             <Route exact path='/Singup' element={<Singup/>}/>
             <Route exact path='/Menu' element={<Menu/>}/>

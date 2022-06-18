@@ -3,8 +3,6 @@ import '../../css/Board.css'
 
 const Board = ({squares,onClick,turn,winningSquares}) => {
     const createSquares  = values => (
-        // console.log('valuesvaluesvaluesvaluesvalues => ',values),
-
         values.map(v => (
             <Square 
             winner = {winningSquares.includes(v)}

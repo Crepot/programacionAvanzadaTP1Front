@@ -2,38 +2,35 @@ import '../css/App.css';
 import Board from '../components/Board/Board';
 import NavBar from '../components/NavBar/NavBar';
 import ScoreBoard from '../components/ScoreBoard/ScoreBoard';
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router';
 import Cookies from 'universal-cookie';
 import useTable from '../hooks/useTable'
-import useSquares from '../hooks/useSquares'
-import usePlayer from '../hooks/usePlayer'
+
 import Spinner from 'react-bootstrap/Spinner'
 import setSquareValue from '../api/table/setSquarevalue'
-import Alert from 'react-bootstrap/Alert'
 
-//TODO: LLevar toda la lógica al back y leerla desde ahí o validar ahí tambien
-
-
-// TODO: Diferenciar entre la unión a la partida y el nuevo juego
 
 const cookie = new Cookies();
-const token = cookie.get('authToken')
-const playerId = cookie.get('playerId')
+const token = cookie.get('authToken');
+const playerId = cookie.get('playerId');
 
-function getBoxValues(positions){
-  console.log('estas son las positions que tengo que leer => ',positions)
-  const boxValues = []
-  boxValues.push(positions.box0)
-  boxValues.push(positions.box1)
-  boxValues.push(positions.box2)
-  boxValues.push(positions.box3)
-  boxValues.push(positions.box4)
-  boxValues.push(positions.box5)
-  boxValues.push(positions.box6)
-  boxValues.push(positions.box7)
-  boxValues.push(positions.box8)
-  return boxValues;
+function refreshTable(positions,playerId,players=[],renderFlag){
+  
+  const auxArr = Array(9).fill(0);
+  if(players.length > 0){
+    positions.forEach((p) =>
+    auxArr[p.box] = p.player_id === parseInt(playerId) ? 
+                      players.find((p) => p.id === parseInt(playerId)).symbol : 
+                      players.find((p) => p.id !== parseInt(playerId)).symbol
+  )
+
+  }
+
+  if(renderFlag){
+    return auxArr
+  }
+  return false;
 }
 
 
@@ -42,85 +39,51 @@ const App = () => {
   // console.log('tablaId => ',tablaId.id)
   
   const {table} = useTable(token,tablaId.id);
-  // const {positions} = useSquares(token,tablaId.id);
-  const {player} = usePlayer(token,playerId)
-  const playerSym = player ? player.symbol : null;
-  const [turn,setTurn] = useState(1);
-  //const [positionId,setPositionId] = useState(table ?table.positions[table.table.moveNumber].id :0);
-  const [squares,setSquares] = useState(Array(9).fill(0)) //TODO: acá vamos a llenarlo con position0
+  const [turn,setTurn] = useState('X');
+  const [moveNumber,setMoveNumber] = useState(0);
+  const [squares,setSquares] = useState(Array(9).fill(0));
+  const [winningSquares,setwinningSquares] = useState([]);
   const [score,setScore] = useState({
     X: 0,
     O: 0,
   });
-  
 
+  const currentPlayerSymbol = table ? table.players.filter((p) => p.id === parseInt(playerId))[0].symbol : '';
+  const positionsToRender = table ? table.positions : Array(9).fill(0);
+  const renderFlag = table ? table.table.move_number ===  moveNumber : false
+  const players = table ? table.players : [];
+  const refreshStatus = refreshTable(positionsToRender,playerId,players,renderFlag);
 
-  console.log('SYMBOL DEL PLAYER ',playerSym)
-  
-  
-  //console.log('table ===> ',turn)
+  if(refreshStatus){
+    setSquares(refreshStatus)
+    setMoveNumber(moveNumber+1)
+  }
 
-  const [winningSquares,setwinningSquares] = useState([]);
-  const positionId = table ? table.positions[table.table.moveNumber].id : 0;
-
-  //console.log('ESTE ES EL ID DE LA POSICIÓN ACTUAL => ', positionId)
 
   const gameReady = table ? true : false
 
   const reset = () =>{
-    setTurn(playerSym);
-    setSquares(Array(9).fill(null));
+    setTurn('');
+    setSquares(Array(9).fill(0));
     setwinningSquares([])
   }
   const checkWinner = newSquares =>{
-    console.log('Se llama a checkWinner')
-    // for(let i  = 0; i<winnerPositions.length;i++){
-    //   const [a,b,c] = winnerPositions[i];
-    //   if(newSquares[a] && newSquares[a] === newSquares[b] && newSquares[a] === newSquares[c]){
-    //     //Hay un ganador
-    //     console.log('ENTRA AL GANADOR');
-    //     endGame(newSquares[a],winnerPositions[i]);
-    //     return 
-    //   }
-    // }
-
-    if(!newSquares.includes(0)){
-      // Hay empate
-      console.log('ENTRA AL EMPATE');
-      endGame(null,Array.from(Array(9).keys()));
-      return
-    }
-    console.log('estos son los newSquares',newSquares)
-    setTurn(turn === turn ? 'O' : turn)
+    // TODO: No implementado
   }
   
   const endGame = (result,winnerPositions) => {
-    setTurn(null);
-    if(result !== null){
-      setScore({
-        ...score,
-        [result]: score[result]+1,
-      });
-      console.log('winnerPositions =>',winnerPositions) 
-      setwinningSquares(winnerPositions);
-    }
-    setTimeout(() => {
-      reset();
-  }, 2000);
-
+    // TODO: No implementado
   }
   //console.log('squares ===> ',squares)
 
   const handleCklick  = square=> {
-    if((table.table.moveNumber % 2 === 0 && playerSym === 'X') || (table.table.moveNumber % 2 !== 0 && playerSym === 'O' )){
-      setTurn(2)
-      
+      setTurn(currentPlayerSymbol)
       let newSquares = [...squares];
       newSquares.splice(square,1,turn);
-      setSquareValue(token,positionId,tablaId.id,newSquares,table.table.moveNumber).then((res) => {
-        setSquares(getBoxValues(res));
+      setSquareValue(token,tablaId.id,square).then(() => {
+        setSquares(newSquares);
       });
-    }
+    
 
 
   }
@@ -133,12 +96,9 @@ const App = () => {
     <NavBar></NavBar>
     </div>
     <div className='container'>
-    <Board turn={playerSym} squares={squares} onClick={handleCklick} winningSquares={winningSquares}/>
+    <Board turn={turn} squares={squares} onClick={handleCklick} winningSquares={winningSquares}/>
     <ScoreBoard scoreO={score.O} scoreX={score.X} />
     <br></br>
-    <Alert key='info' variant={(table.table.moveNumber % 2 === 0 && playerSym === 'X') || (table.table.moveNumber % 2 !== 0 && playerSym === 'O' ) ? 'danger':'info'}>
-              Turno de {(table.table.moveNumber % 2 === 0 && playerSym === 'X') ? 'X' :'O'}
-    </Alert>
     </div>
     </div>
   ) :

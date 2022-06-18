@@ -1,5 +1,5 @@
  import  { useEffect, useState } from "react";
- import getOneTable from '../api/table/getOneTable'
+ import getTable from '../api/table/getTable'
 
 
  function useTable(token,tablaId){
@@ -12,7 +12,8 @@
         setLoading(true)
         setInterval(() =>
             // console.log('token,tablaId => ',token,tablaId) &&
-            getOneTable(token,tablaId).then((res) =>{
+            getTable(token,tablaId).then((res) =>{
+                // console.log('res.players => ',res.players)
                  if(res.players.length > 1){
                     setTable(res);
                     }else{

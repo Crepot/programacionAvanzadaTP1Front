@@ -13,6 +13,7 @@ export default function getTable(token,tableId){
         };
         //Get one table
         axios.get(url,{headers}).then((res)=> {
+            //console.log('res => ',res)
             resolve(res.data);
         }).catch((err)=> {
             console.log('ERROR => ',err)

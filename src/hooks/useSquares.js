@@ -1,7 +1,5 @@
 import  { useEffect, useState } from "react";
 import getSquares from '../api/table/getSquares'
-//  import getOneTable from '../api/table/getOneTable'
-
 
 function useSquares(token,tablaId){
    const [squares,setSquares] = useState(null);
