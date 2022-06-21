@@ -16,7 +16,6 @@ const token = cookie.get('authToken');
 const playerId = cookie.get('playerId');
 
 function refreshTable(positions,playerId,players=[],renderFlag){
-  
   const auxArr = Array(9).fill(0);
   if(players.length > 0){
     positions.forEach((p) =>
@@ -48,7 +47,7 @@ const App = () => {
     O: 0,
   });
 
-  const currentPlayerSymbol = table ? table.players.filter((p) => p.id === parseInt(playerId))[0].symbol : '';
+  const playerSymbol = table ? table.players.filter((p) => p.id === parseInt(playerId))[0].symbol : '';
   const positionsToRender = table ? table.positions : Array(9).fill(0);
   const renderFlag = table ? table.table.move_number ===  moveNumber : false
   const players = table ? table.players : [];
@@ -57,9 +56,14 @@ const App = () => {
   if(refreshStatus){
     setSquares(refreshStatus)
     setMoveNumber(moveNumber+1)
+    setTurn(playerSymbol)
+
   }
 
+  
+  const actualPlayer = table && table.players ? table.players.filter((p) => p.id === table.table.curret_player)[0].symbol :'X';
 
+  const winner =  table &&  table.players.filter((p) => p.id === table.table.winner)[0];
   const gameReady = table ? true : false
 
   const reset = () =>{
@@ -77,7 +81,7 @@ const App = () => {
   //console.log('squares ===> ',squares)
 
   const handleCklick  = square=> {
-      setTurn(currentPlayerSymbol)
+      setTurn(playerSymbol)
       let newSquares = [...squares];
       newSquares.splice(square,1,turn);
       setSquareValue(token,tablaId.id,square).then(() => {
@@ -89,7 +93,6 @@ const App = () => {
   }
 
 
-
   return gameReady ? (
     <div>
     <div className='navbar'>
@@ -99,6 +102,7 @@ const App = () => {
     <Board turn={turn} squares={squares} onClick={handleCklick} winningSquares={winningSquares}/>
     <ScoreBoard scoreO={score.O} scoreX={score.X} />
     <br></br>
+    {winner ? <h1>El ganador es: {winner.symbol}</h1> :<h1>Juega: {actualPlayer}</h1>}
     </div>
     </div>
   ) :

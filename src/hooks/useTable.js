@@ -22,7 +22,7 @@
             }).catch((err) =>{
                 setError(err)
             }),
-        9000)
+        900)
 
     }, [token,tablaId]);
     return {table,loading,error}

@@ -27,12 +27,15 @@ class Tableros extends Component{
     }
 
     renderTablesList(){
-        return this.props.tables.map((table) => {
+
+        const games = this.props.tables.filter((g) => g.status_game ==='creado') //Filtro solamente los creados
+        return games.map((table) => {
             return (     
                 <tr key={table.id} className='tablero'>
                     <td>
-                        {`${table.id} createtd: ${moment(table.created_at).format('Do MMMM YYYY, h:mm')}`}
+                        {`${table.id} created: ${moment(table.created_at).format('Do MMMM YYYY, h:mm')}`}
                     </td>
+                    <td> {table.status_game}</td>
                     <td>
                     <Button variant='primary' key={table.id} onClick={() => 
                     {
@@ -95,6 +98,7 @@ class Tableros extends Component{
 
 function mapStateToProps(state){
     console.log('mapStateToProps => ',state)
+
     return{
       tables: state.tables.tables
     }
